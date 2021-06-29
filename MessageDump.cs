@@ -25,8 +25,8 @@ namespace CWRBusDataDump
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             Console.WriteLine("Starting...");
-                       
 
+            var options = new CreateMessageBatchOptions() { MaxSizeInBytes = null };
 
             for (int i = 1; i <= batchCount; i++)
             {
@@ -35,12 +35,14 @@ namespace CWRBusDataDump
                     for (int j = 1; j <= messageBatchSize; j++)
                     {
                         batch.TryAddMessage(MessageHelper.CreateMessage(j));
+                        Console.WriteLine("sending message");
                     }
                     var sw = new Stopwatch();
                     sw.Start();
                     Console.WriteLine($"Sending  batch {i} with {messageBatchSize} messages");
 
-                    await sender.SendMessagesAsync(batch);
+                    await sender.SendMessagesAsync(batch );
+                   
                     Console.WriteLine($"batch {i} send: {sw.Elapsed.TotalSeconds}");
                     sw.Restart();
                 }                    
